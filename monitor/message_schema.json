@@ -1,0 +1,42 @@
+{
+  "version" : "1.0",
+  "delimiter" : "\t",
+  "format" :
+  [
+    {
+      "name" : "timestamp",
+      "position" : "0",
+      "description" : "none"
+    },
+    {
+      "name" : "host",
+      "position" : "1",
+      "description" : "none"
+    },
+    {
+      "name" : "server",
+      "position" : "2",
+      "description" : "none"
+    },
+    {
+      "name" : "deposit",
+      "position" : "3",
+      "description" : "none"
+    },
+    {
+      "name" : "msg_count",
+      "position" : "4",
+      "description" : "none"
+    },
+    {
+      "name" : "msg_size",
+      "position" : "5",
+      "description" : "none"
+    },
+    {
+      "name" : "total_msg_count",
+      "position" : "6",
+      "description" : "none"
+    }
+  ]
+}
