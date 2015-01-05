@@ -10,13 +10,12 @@ class ConsumerInstance:
   consumer = None
 
   def __init__(self):
-    global config
     try:
       hosts = config.get("kafka", "hosts")
       consumer_group = config.get("kafka", "consumer_group")
       topic = config.get("kafka", "topic")
       consumer_type = config.get("kafka", "consumer_type")
-      self.client= KafkaClient(hosts)
+      self.client= KafkaClient(hosts, ip_mapping_file = 'ipmapping.conf')
     except Exception, exception:
       print exception
 
@@ -49,16 +48,20 @@ class ConsumerInstance:
 class KafkaFetcher:
   def __init__(self):
     self.consumer = ConsumerInstance()
+    self.consumer.Get().seek(0, 2)
     self.lock = threading.Lock()
 
   def Fetch(self):
     self.lock.acquire()
-    message_set = self.consumer.Get().get_messages(100, timeout = 5)
+    message_set = self.consumer.Get().get_messages(2000, block = False, timeout = 20)
     self.lock.release()
     return message_set
     
 # for unit test
 if __name__ == '__main__':
+  import time
   fetcher = KafkaFetcher()
-  for message in fetcher.Fetch():
-    print message[1][3]
+  while True:
+    for message in fetcher.Fetch():
+      print message[1][3]
+    time.sleep(30)
