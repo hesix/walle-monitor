@@ -16,7 +16,7 @@ if not os.path.exists("message_schema.json"):
   raise Exception("message schema doesn't exist")
 
 logging.config.fileConfig("logging.conf")
-logger = logging.getLogger("log")
+logger = logging.getLogger("walle-monitor")
 
 config = ConfigParser.ConfigParser()
 config.read("monitor.conf")

@@ -5,15 +5,7 @@ from collector import ClientInfo
 
 import MySQLdb
 
-class HBaseExporter:
-  def __init__(self):
-    pass
-
-  def Export(self, messages):
-    pass
-
 class MySQLExporter:
-
   def __init__(self):
     self._conn = MySQLdb.connect(
                    host = config.get("mysql", "host"),
@@ -45,13 +37,6 @@ class MySQLExporter:
       self._conn.commit()
     except Exception, exception:
       logger.error(exception)
-
-class CPickleExporter:
-  def __init__(self):
-    pass
-
-  def Export(self, messages):
-    pass
 
 if __name__ == '__main__':
   exporter = MySQLExporter()

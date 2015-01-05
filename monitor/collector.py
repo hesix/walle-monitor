@@ -124,8 +124,8 @@ if __name__ == '__main__':
       self.assertEqual(disconnect_set[0].total_msg_count, -1)
 
   def testCollect(self):
-      pass
       #collector = CustomErrorCollector()
       #collector.Collect(messages):
+      pass
 
   unittest.main()
