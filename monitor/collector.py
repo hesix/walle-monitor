@@ -4,8 +4,8 @@ import copy
 import os
 import logging
 
-from config import config, logger, message_schema
-                  
+from config import logger, message_schema
+
 class ClientInfo:
   timestamp = None
   host = ''
@@ -17,9 +17,9 @@ class ClientInfo:
   disconnect_count = 0
 
 class CustomErrorCollector:
-  def __init__(self):
-    self._file_deposit_allow = config.getint("behavior", "file_deposit_allow")
-    self._disconnect_upper_bound = config.getint("behavior", "disconnect_upper_bound")
+  def __init__(self, options):
+    self._file_deposit_allow = options.file_deposit_allow
+    self._disconnect_upper_bound = options.disconnect_upper_bound
     self._pre_hosts = {}
     self._cur_hosts = {}
     self._message_schema = {}
@@ -96,10 +96,14 @@ class CustomErrorCollector:
 
 if __name__ == '__main__':
   import unittest
+  from options import parse_option
 
   class CollectorTest(unittest.TestCase):
+    def setUp(self):
+      self.options = parse_option()
+
     def testCollectWarning(self):
-      collector = CustomErrorCollector()
+      collector = CustomErrorCollector(self.options)
       message = "a\tb\tc\t0\t0\t0\t0".split('\t')
       ret, client_info = collector.CollectWarning(message)
       self.assertEqual(ret, False)
@@ -108,7 +112,7 @@ if __name__ == '__main__':
       self.assertEqual(ret, True)
 
     def testCollectDisconnectedClient(self):
-      collector = CustomErrorCollector()
+      collector = CustomErrorCollector(self.options)
       collector._pre_hosts["host1"] = ClientInfo()
       self.assertEqual(collector._pre_hosts["host1"].disconnect_count, 0)
       collector._cur_hosts = {}
@@ -122,10 +126,5 @@ if __name__ == '__main__':
       self.assertEqual(disconnect_set[0].msg_count, -1)
       self.assertEqual(disconnect_set[0].msg_size, -1)
       self.assertEqual(disconnect_set[0].total_msg_count, -1)
-
-  def testCollect(self):
-      #collector = CustomErrorCollector()
-      #collector.Collect(messages):
-      pass
 
   unittest.main()

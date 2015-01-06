@@ -2,19 +2,20 @@ __author__ = 'xiaotian.wu@chinacache.com'
 
 import threading
 
-from config import config, logger
+from config import logger
 from kafka import KafkaClient, MultiProcessConsumer, SimpleConsumer
+from options import parse_option
 
 class ConsumerInstance:
   client = None
   consumer = None
 
-  def __init__(self):
-    hosts = config.get("kafka", "hosts")
-    consumer_group = config.get("kafka", "consumer_group")
-    topic = config.get("kafka", "topic")
-    consumer_type = config.get("kafka", "consumer_type")
-    ip_mapping = config.get("kafka", "ip_mapping_file")
+  def __init__(self, options):
+    hosts = options.kafka_hosts
+    consumer_group = options.consumer_group
+    topic = options.topic
+    consumer_type = options.consumer_type
+    ip_mapping = options.ip_mapping_file
     logger.info("kafka hosts: %s" % hosts)
     logger.info("consumer group: %s" % consumer_group)
     logger.info("topic: %s" % topic)
@@ -22,11 +23,11 @@ class ConsumerInstance:
     logger.info("ip mapping file: %s" % ip_mapping)
     self.client = KafkaClient(hosts, ip_mapping_file = ip_mapping)
     if consumer_type == "multiprocess":
-      partitions_per_proc = config.getint("behavior", "partitions_per_proc")
+      partitions_per_proc = options.partitions_per_proc
       partition_num = len(self.client.topic_partitions[topic])
       num_procs = partition_num * partitions_per_proc
-      auto_commit_every_n = config.getint("behavior", "auto_commit_msg_count")
-      auto_commit_every_t = config.getint("behavior", "auto_commit_interval")
+      auto_commit_every_n = options.auto_commit_msg_count
+      auto_commit_every_t = options.auto_commit_interval
       self.consumer = MultiProcessConsumer(
                         self.client,
                         consumer_group,
@@ -48,12 +49,12 @@ class ConsumerInstance:
     return self.consumer;
 
 class KafkaFetcher:
-  def __init__(self):
-    self.consumer = ConsumerInstance()
+  def __init__(self, options):
+    self.consumer = ConsumerInstance(options)
     self.consumer.Get().seek(0, 2)
     self.lock = threading.Lock()
-    self.message_set_max_size = config.getint("kafka", "message_set_max_size")
-    self.fetch_timeout = config.getint("kafka", "fetch_timeout")
+    self.message_set_max_size = options.message_set_max_size
+    self.fetch_timeout = options.fetch_timeout
 
   def Fetch(self):
     self.lock.acquire()
@@ -63,12 +64,13 @@ class KafkaFetcher:
                     self.fetch_timeout)
     self.lock.release()
     return message_set
-    
+
 # for unit test
 if __name__ == '__main__':
+  options = parse_option()
   import time
-  fetcher = KafkaFetcher()
-  fetch_interval = config.getint("kafka", "fetch_interval")
+  fetcher = KafkaFetcher(options)
+  fetch_interval = options.fetch_interval
   while True:
     for message in fetcher.Fetch():
       print message[1][3]

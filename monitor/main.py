@@ -4,16 +4,17 @@ __author__ = 'xiaotian.wu@chinacache.com'
 
 import time
 
-from config import config, logger
+from config import logger
 from collector import CustomErrorCollector
-#from exporter import MySQLExporter
 from fetcher import KafkaFetcher
+from options import parse_option
 #from notifier import Notifier
 
 if __name__ == "__main__":
-  fetcher = KafkaFetcher()
-  fetch_interval = config.getint("kafka", "fetch_interval")
-  custom_error_collector = CustomErrorCollector()
+  options = parse_option()
+  fetcher = KafkaFetcher(options)
+  fetch_interval = options.fetch_interval
+  custom_error_collector = CustomErrorCollector(options)
   #exporter = MySQLExporter()
   #notifier = Notifier()
 
