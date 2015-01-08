@@ -4,10 +4,10 @@ __author__ = 'xiaotian.wu@chinacache.com'
 
 import time
 
-from config import logger
-from collector import CustomErrorCollector
-from fetcher import KafkaFetcher
-from options import parse_option
+from monitor.config import logger
+from monitor.collector import CustomErrorCollector
+from monitor.fetcher import KafkaFetcher
+from monitor.options import parse_option
 #from notifier import Notifier
 
 if __name__ == "__main__":

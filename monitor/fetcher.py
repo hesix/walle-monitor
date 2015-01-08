@@ -2,9 +2,9 @@ __author__ = 'xiaotian.wu@chinacache.com'
 
 import threading
 
-from config import logger
+from monitor.config import logger
+from monitor.options import parse_option
 from kafka import KafkaClient, MultiProcessConsumer, SimpleConsumer
-from options import parse_option
 
 class ConsumerInstance:
   client = None

@@ -4,7 +4,7 @@ import copy
 import os
 import logging
 
-from config import logger, message_schema
+from monitor.config import logger, message_schema
 
 class ClientInfo:
   timestamp = None
