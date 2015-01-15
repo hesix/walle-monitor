@@ -2,26 +2,51 @@
 
 __author__ = 'xiaotian.wu@chinacache.com'
 
+import os
+import socket
 import time
+import threading
+
+from flask import Flask
+from flask import render_template
 
 from monitor.config import logger
 from monitor.collector import CustomErrorCollector
 from monitor.fetcher import KafkaFetcher
 from monitor.options import parse_option
-#from notifier import Notifier
+
+app = Flask(__name__)
+connect_set = None
+
+@app.route('/deposit/')
+def deposit():
+  return render_template('deposit.html', clients = connect_set)
+
+@app.route('/detail/')
+def detail():
+  return render_template('detail.html', clients = connect_set)
+
+def start_web_service():
+  def run():
+    host = socket.gethostbyname(socket.gethostname())
+    port = 20000
+    app.run(host = host, port = port)
+
+  running_thread = threading.Thread(target = run)
+  running_thread.start()
 
 if __name__ == "__main__":
   options = parse_option()
   fetcher = KafkaFetcher(options)
   fetch_interval = options.fetch_interval
   custom_error_collector = CustomErrorCollector(options)
-  #exporter = MySQLExporter()
-  #notifier = Notifier()
+  start_web_service()
 
   while True:
     logger.info("start fetching kafka messages...")
     monitor_messages = fetcher.Fetch()
     logger.info("start collecting data from fetched message set...")
+    global connect_set
     warning_set, disconnect_set, connect_set = custom_error_collector.Collect(monitor_messages)
     logger.debug("---------------------------warning set------------------------")
     for client in warning_set:
@@ -32,9 +57,4 @@ if __name__ == "__main__":
     logger.debug("---------------------------connect set------------------------")
     for client in connect_set:
       logger.debug(client.host)
-    #logger.info("append log to db...")
-    #exporter.Export(disconnect_set + connect_set)
-    #logger.info("send warningset/errorset notification...")
-    #notifier.Send(str(warning_set))
-    #notifier.Send(str(error_set))
     time.sleep(fetch_interval)
