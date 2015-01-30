@@ -46,7 +46,6 @@ if __name__ == "__main__":
     logger.info("start fetching kafka messages...")
     monitor_messages = fetcher.fetch()
     logger.info("start collecting data from fetched message set...")
-    global connect_set
     warning_set, disconnect_set, connect_set = custom_error_collector.Collect(monitor_messages)
     logger.debug("---------------------------warning set------------------------")
     for client in warning_set:
