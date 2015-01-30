@@ -28,7 +28,7 @@ def detail():
 
 def start_web_service():
   def run():
-    host = socket.gethostbyname(socket.gethostname())
+    host = "0.0.0.0"
     port = 20000
     app.run(host = host, port = port)
 
