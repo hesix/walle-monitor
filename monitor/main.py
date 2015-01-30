@@ -10,10 +10,10 @@ import threading
 from flask import Flask
 from flask import render_template
 
-from monitor.config import logger
-from monitor.collector import CustomErrorCollector
-from monitor.fetcher import KafkaFetcher
-from monitor.options import parse_option
+from monitor.config.config import logger
+from monitor.core.collector import CustomErrorCollector
+from monitor.core.fetcher import KafkaFetcher
+from monitor.core.options import parse_option
 
 app = Flask(__name__)
 connect_set = None
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
   while True:
     logger.info("start fetching kafka messages...")
-    monitor_messages = fetcher.Fetch()
+    monitor_messages = fetcher.fetch()
     logger.info("start collecting data from fetched message set...")
     global connect_set
     warning_set, disconnect_set, connect_set = custom_error_collector.Collect(monitor_messages)

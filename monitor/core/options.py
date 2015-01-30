@@ -1,3 +1,5 @@
+__author__ = 'xiaotian.wu@chinacache.com'
+
 from optparse import OptionParser
 
 def parse_option():
@@ -7,16 +9,16 @@ def parse_option():
                     default = "", help = "kafka server hosts")
   parser.add_option("-b", "--consumer_group",
                     type = "string", dest = "consumer_group",
-                    default = "walle_consumer", help = "kafka consumer group")
+                    default = "walle-monitor-consumer", help = "kafka consumer group")
   parser.add_option("-c", "--topic",
                     type = "string", dest = "topic",
-                    default = "final-log", help = "topic")
+                    default = "zeus-log", help = "topic")
   parser.add_option("-d", "--consumer_type",
                     type = "string", dest = "consumer_type",
                     default = "simple", help = "consumer type")
-  parser.add_option("-e", "--ip_mapping_file",
-                    type = "string", dest = "ip_mapping_file",
-                    default = "ipmapping.conf", help = "ip mapping file")
+  parser.add_option("-e", "--enable_kafka_ipmap",
+                    action = "store_true", dest = "enable_kafka_ipmap",
+                    default = True, help = "enable ip mapping")
   parser.add_option("-f", "--fetch_timeout",
                     type = "int", dest = "fetch_timeout",
                     default = 20, help = "fetch timeout")
@@ -50,15 +52,15 @@ def parse_option():
   parser.add_option("-q", "--file_deposit_allow",
                     type = "int", dest = "file_deposit_allow",
                     default = 10, help = "file deposit allow count")
-  parser.add_option("-r", "--enable_sms",
-                    action = "store_true", dest = "enable_sms",
-                    default = False, help = "enable sms")
-  parser.add_option("-s", "--sms_to_list",
-                    type = "string", dest = "sms_to_list",
+  parser.add_option("-r", "--sms_list",
+                    type = "string", dest = "sms_list",
                     default = "", help = "sms to list")
-  parser.add_option("-t", "--enable_mail",
-                    action = "store_true", dest = "enable_mail",
-                    default = True, help = "enable mail")
+  parser.add_option("-s", "--mail_list",
+                    type = "string", dest = "mail_list",
+                    default = "", help = "mail list")
+  parser.add_option("-t", "--mail_host",
+                    type = "string", dest = "mail_host",
+                    default = "", help = "mail host")
   (options, args) = parser.parse_args()
   return options
 

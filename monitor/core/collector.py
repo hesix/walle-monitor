@@ -4,17 +4,18 @@ import copy
 import os
 import logging
 
-from monitor.config import logger, message_schema
+from monitor.config.config import logger, message_schema
 
 class ClientInfo:
-  timestamp = None
-  host = ''
-  server = ''
-  deposit_num = 0
-  msg_count = 0
-  msg_size = 0
-  total_msg_count = 0
-  disconnect_count = 0
+  def __init__(self):
+    self.timestamp = None
+    self.host = ''
+    self.server = ''
+    self.deposit_num = 0
+    self.msg_count = 0
+    self.msg_size = 0
+    self.total_msg_count = 0
+    self.disconnect_count = 0
 
 class CustomErrorCollector:
   def __init__(self, options):

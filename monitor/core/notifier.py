@@ -5,25 +5,18 @@ import sys
 from email.MIMEText import MIMEText
 from email.MIMEMultipart import MIMEMultipart
 
-from config import config
-
 class Notifier:
-  def __init__(self):
-    try:
-      self.enablemail = config.get("mail", "enable")
-      self.mailto = config.get("mail", "to")
-      self.mailfrom = config.get("mail", "from")
-      self.host = config.get("mail", "host")
-      self.subject = config.get("mail", "subject")
-      self.enablesms = config.get("sms", "enable")
-      self.smslist = config.get("sms", "to").split(',')
-    except Exception, exception:
-      print exception
+  def __init__(options):
+    self.mailto = options.mail_list
+    self.mailfrom = "walle-monitor"
+    self.host = options.mail_host
+    self.subject = "log collector service warning"
+    self.smslist = options.sms_list.split(',')
 
   def Send(self, content):
-    if self.enablemail == 'true':
+    if self.mailto != '':
       self.SendMail(content)
-    if self.enablesms == 'true':
+    if len(self.smslist) != 0:
       self.SendSMS(content)
 
   def SendMail(self, content):
