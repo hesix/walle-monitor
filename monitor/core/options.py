@@ -6,7 +6,7 @@ def parse_option():
   parser = OptionParser()
   parser.add_option("-a", "--kafka_hosts",
                     type = "string", dest = "kafka_hosts",
-                    default = "", help = "kafka server hosts")
+                    default = "180.97.185.55:9092;180.97.185.66:9092;180.97.185.67:9092", help = "kafka server hosts")
   parser.add_option("-b", "--consumer_group",
                     type = "string", dest = "consumer_group",
                     default = "walle-monitor-consumer", help = "kafka consumer group")
