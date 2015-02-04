@@ -56,7 +56,7 @@ if __name__ == "__main__":
     for client in warning_set:
       logger.debug(client.host)
       if host_filter.WarningHostJudger(client.host):
-        content += "%s\n" % client.host
+        content += "%s\t\t%d\n" % (client.host, client.deposit_num)
     if content != "":
       content = "The clients' deposited file more than warning value\n%s" % content
       notifier.Send(content, "Accumulation Warning")

@@ -16,7 +16,6 @@ class Notifier:
   def Send(self, content, subject):
     if self.mailto != '':
       self.SendMail(content, subject)
-    print self.smslist
     #if len(self.smslist) != 0:
     #  self.SendSMS(content)
 

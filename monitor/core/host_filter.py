@@ -10,7 +10,7 @@ class HostFilter:
       self.warning_host_list[host] = 1
       return True
     else:
-      self.disconnected_host_list[host] = 1
+      self.warning_host_list[host] += 1
       return False
 
   def DisconnectedHostJudger(self, host_list):
@@ -18,19 +18,27 @@ class HostFilter:
       self.disconnected_host_list[host] = 1
       return True
     else:
-      self.disconnected_host_list[host] = 1
+      self.disconnected_host_list[host] += 1
       return False
 
   def ResetFilter(self):
+    max_warning = 0
     for host in self.warning_host_list.keys():
-      if self.warning_host_list[host] == 0:
+      max_warning = max(max_warning, self.warning_host_list[host])
+
+    for host in self.warning_host_list.keys():
+      if max_warning - self.warning_host_list[host] == 3:
         del self.warning_host_list[host]
-      else:
+      elif max_warning == 3:
         self.warning_host_list[host] = 0
-  
+
+    max_disconnected = 0
     for host in self.disconnected_host_list.keys():
-      if self.disconnected_host_list[host] == 0:
+       max_disconnected = max(max_disconnected, disconnected_host_list[host])
+
+    for host in self.disconnected_host_list.keys():
+      if max_disconnected - self.disconnected_host_list[host] == 3:
         del self.disconnected_host_list[host]
-      else:
+      elif max_disconnected == 3:
         self.disconnected_host_list[host] = 0
 
