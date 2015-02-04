@@ -57,10 +57,7 @@ def parse_option():
                     default = "", help = "sms to list")
   parser.add_option("-s", "--mail_list",
                     type = "string", dest = "mail_list",
-                    default = "", help = "mail list")
-  parser.add_option("-t", "--mail_host",
-                    type = "string", dest = "mail_host",
-                    default = "", help = "mail host")
+                    default = "qiang.he@chinacache.com", help = "mail list")
   (options, args) = parser.parse_args()
   return options
 

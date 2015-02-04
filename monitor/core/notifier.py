@@ -4,24 +4,25 @@ import smtplib
 import sys
 from email.MIMEText import MIMEText
 from email.MIMEMultipart import MIMEMultipart
+from monitor.core.options import parse_option
 
 class Notifier:
-  def __init__(options):
-    self.mailto = options.mail_list
-    self.mailfrom = "walle-monitor"
-    self.host = options.mail_host
-    self.subject = "log collector service warning"
+  def __init__(self, options):
+    self.mailto = options.mail_list.split(',')
+    self.mailfrom = "qiang.he@chinacache.com"
+    self.host = "corp.chinacache.com"
     self.smslist = options.sms_list.split(',')
 
-  def Send(self, content):
+  def Send(self, content, subject):
     if self.mailto != '':
-      self.SendMail(content)
-    if len(self.smslist) != 0:
-      self.SendSMS(content)
+      self.SendMail(content, subject)
+    print self.smslist
+    #if len(self.smslist) != 0:
+    #  self.SendSMS(content)
 
-  def SendMail(self, content):
+  def SendMail(self, content, subject):
     msg = MIMEMultipart()
-    msg['Subject'] = self.subject
+    msg['Subject'] = subject
     msg['From'] = self.mailfrom
     msg['To'] = ";".join(self.mailto)
     try:
@@ -39,5 +40,6 @@ class Notifier:
       os.system('/usr/qiang.he/send_sms %s "%s"' % (user, str(content)))
 
 if __name__ == '__main__':
-  notifier = Notifier()
-  notifier.SendMail("hello")
+  options = parse_option() 
+  notifier = Notifier(options)
+  notifier.SendMail("hello", "This is a test")
