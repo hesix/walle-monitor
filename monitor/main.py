@@ -43,7 +43,7 @@ if __name__ == "__main__":
   start_web_service()
 
   while True:
-    logger.info("start fetching kafka messages...")
+    logger.info("start fetching kafka messages....")
     monitor_messages = fetcher.fetch()
     logger.info("start collecting data from fetched message set...")
     warning_set, disconnect_set, connect_set = custom_error_collector.Collect(monitor_messages)
