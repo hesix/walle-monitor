@@ -13,7 +13,7 @@ class HostFilter:
       self.warning_host_list[host] += 1
       return False
 
-  def DisconnectedHostJudger(self, host_list):
+  def DisconnectedHostJudger(self, host):
     if host not in self.disconnected_host_list.keys():
       self.disconnected_host_list[host] = 1
       return True
