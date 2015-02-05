@@ -52,7 +52,7 @@ if __name__ == "__main__":
     monitor_messages = fetcher.fetch()
     logger.info("start collecting data from fetched message set...")
     warning_set, disconnect_set, connect_set = custom_error_collector.Collect(monitor_messages)
-    logger.info("---------------------------warning set------------------------")
+    logger.debug("---------------------------warning set------------------------")
     for client in warning_set:
       logger.debug(client.host)
       if host_filter.WarningHostJudger(client.host):
@@ -67,7 +67,7 @@ if __name__ == "__main__":
       if host_filter.DisconnectedHostJudger(client):
         content += "%s\n" % client.host
     if content != "":
-      content = "The clients' log_collector service have down\n%s" % content
+      content = "The clients' log_collector service have disconnected\n%s" % content
       notifier.Send(content, "log_collector Service Down")
 
     logger.debug("---------------------------connect set------------------------")

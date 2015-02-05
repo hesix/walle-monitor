@@ -37,8 +37,8 @@ class HostFilter:
        max_disconnected = max(max_disconnected, self.disconnected_host_list[host])
 
     for host in self.disconnected_host_list.keys():
-      if max_disconnected - self.disconnected_host_list[host] == 3:
+      if max_disconnected - self.disconnected_host_list[host] == 10:
         del self.disconnected_host_list[host]
-      elif max_disconnected == 3:
+      elif max_disconnected == 10:
         self.disconnected_host_list[host] = 0
 
