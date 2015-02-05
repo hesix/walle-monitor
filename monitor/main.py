@@ -63,7 +63,7 @@ if __name__ == "__main__":
     content = ""
     logger.debug("---------------------------disconnect set---------------------")
     for client in disconnect_set:
-      logger.info(client.host)
+      logger.debug(client.host)
       if host_filter.DisconnectedHostJudger(client.host):
         content += "%s\n" % client.host
     if content != "":
