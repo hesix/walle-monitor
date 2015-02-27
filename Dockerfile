@@ -4,7 +4,7 @@
 #               log-collector service of ChinaCache
 
 # all service running on mesos should be inherited from mesos-executor
-FROM cpdc/mesos-docker-executor
+FROM cpdc/matrix-executor
 MAINTAINER Xiaotian Wu <xiaotian.wu@chinacache.com>
 
 # install modified kafka-python for special usage
