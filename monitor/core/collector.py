@@ -5,6 +5,7 @@ import os
 import logging
 
 from monitor.config.config import logger, message_schema
+from monitor.core.export import Exportor
 
 class ClientInfo:
   def __init__(self):
@@ -34,6 +35,7 @@ class CustomErrorCollector:
     self._msg_count_col = int(self._message_schema["msg_count"])
     self._msg_size_col = int(self._message_schema["msg_size"])
     self._total_msg_count_col = int(self._message_schema["total_msg_count"])
+    self._db_client = Exportor(options.influxdb_host)
 
   def Collect(self, messages):
     warning_set = []
@@ -41,6 +43,14 @@ class CustomErrorCollector:
     for message in messages:
       if len(message) < 2 or len(message[1]) < 4:
         continue
+      export_info = []
+      export_info.append(self._timestamp_col)
+      export_info.append(self._host_col_)
+      export_info.append(self._deposit_col)
+      export_info.append(self._msg_count_col)
+      export_info.append(self._msg_size_col)
+      export_info.append(self._total_msg_count_col)
+      self._db_client.export_detail(export_info)
       message = message[1][3].split(self._message_delimiter)
       ret, client_info = self.CollectWarning(message)
       if ret is True:
@@ -72,6 +82,14 @@ class CustomErrorCollector:
       client_info.total_msg_count = int(message[self._total_msg_count_col])
       client_info.disconnect_count = 0
       if self.CheckWarning(client_info) is True:
+        warning_info = []
+        warning_info.append(client_info.timestamp)
+        warning_info.append(client_info.host)
+        warning_info.append(client_info.deposit_num)
+        warning_info.append(client_info.msg_count)
+        warning_info.append(client_info.msg_size)
+        warning_info.append(client_info.total_msg_count)
+        self._db_client.export_deposit(warning_info)
         logger.debug("client: %s has error, deposit num: %s" % (client_host, client_info.deposit_num))
         return True, client_info
       else:

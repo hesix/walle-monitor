@@ -7,9 +7,6 @@ import socket
 import time
 import threading
 
-from flask import Flask
-from flask import render_template
-
 from monitor.config.config import logger
 from monitor.core.collector import CustomErrorCollector
 from monitor.core.fetcher import KafkaFetcher
@@ -17,32 +14,13 @@ from monitor.core.options import parse_option
 from monitor.core.host_filter import HostFilter 
 from monitor.core.notifier import Notifier
 
-app = Flask(__name__)
 connect_set = None
-
-@app.route('/deposit/')
-def deposit():
-  return render_template('deposit.html', clients = connect_set)
-
-@app.route('/detail/')
-def detail():
-  return render_template('detail.html', clients = connect_set)
-
-def start_web_service():
-  def run():
-    host = "0.0.0.0"
-    port = 20000
-    app.run(host = host, port = port)
-
-  running_thread = threading.Thread(target = run)
-  running_thread.start()
 
 if __name__ == "__main__":
   options = parse_option()
   fetcher = KafkaFetcher(options)
   fetch_interval = options.fetch_interval
   custom_error_collector = CustomErrorCollector(options)
-  start_web_service()
   host_filter = HostFilter()
   notifier = Notifier(options)
   
