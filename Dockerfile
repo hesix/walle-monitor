@@ -11,8 +11,9 @@ MAINTAINER Xiaotian Wu <xiaotian.wu@chinacache.com>
 RUN git clone https://github.com/cpdc/kafka-python
 RUN cd kafka-python&&python setup.py install
 
-# for front-end use
-RUN easy_install flask
+# for influxdb-python
+RUN easy_install pip
+RUN pip install influxdb
 
 # walle-monitor
 ADD . /walle-monitor
