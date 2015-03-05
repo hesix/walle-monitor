@@ -52,7 +52,7 @@ class CustomErrorCollector:
       export_info.append(int(message[self._deposit_col]))
       export_info.append(int(message[self._msg_count_col]))
       export_info.append(int(message[self._msg_size_col]))
-      #export_info.append(int(message[self._total_msg_count_col]))
+      export_info.append(int(message[self._total_msg_count_col]))
       self._db_client.export_detail(export_info)
       ret, client_info = self.CollectWarning(message)
       if ret is True:
