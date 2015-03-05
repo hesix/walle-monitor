@@ -44,12 +44,12 @@ class CustomErrorCollector:
       if len(message) < 2 or len(message[1]) < 4:
         continue
       export_info = []
-      export_info.append(self._timestamp_col)
-      export_info.append(self._host_col_)
-      export_info.append(self._deposit_col)
-      export_info.append(self._msg_count_col)
-      export_info.append(self._msg_size_col)
-      export_info.append(self._total_msg_count_col)
+      export_info.append(message[self._timestamp_col])
+      export_info.append(message[self._host_col])
+      export_info.append(message[self._deposit_col])
+      export_info.append(message[self._msg_count_col])
+      export_info.append(message[self._msg_size_col])
+      export_info.append(message[self._total_msg_count_col])
       self._db_client.export_detail(export_info)
       message = message[1][3].split(self._message_delimiter)
       ret, client_info = self.CollectWarning(message)

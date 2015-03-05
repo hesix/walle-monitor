@@ -58,7 +58,7 @@ def parse_option():
   parser.add_option("-s", "--mail_list",
                     type = "string", dest = "mail_list",
                     default = "qiang.he@chinacache.com", help = "mail list")
-  parser.add_option("-D", "--influxdb_host",
+  parser.add_option("-H", "--influxdb_host",
                     type = "string", dest = "influxdb_host",
                     default = "localhost", help = "influxdb host")
   (options, args) = parser.parse_args()
